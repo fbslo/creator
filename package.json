@@ -1,0 +1,19 @@
+{
+  "name": "steem2hive",
+  "version": "1.0.0",
+  "description": "Steem to HIVE exchange.",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon ./app.js"
+  },
+  "author": "fbslo",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "steem": "^0.7.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

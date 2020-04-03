@@ -24,7 +24,7 @@ async function start(){
 
 async function getHiveTransactions(){
 	hive.api.streamTransactions('head', function(err, result) {
-		//if (err) start()
+		if (err) start()
 		try {
 			let type = result.operations[0][0]
 			let data = result.operations[0][1]
@@ -34,7 +34,7 @@ async function getHiveTransactions(){
 				hiveBalance += Number(data.amount.split(" ")[0])
 			}
 		} catch (err) {
-			//start()
+			start()
 		}
 	});
 }
@@ -50,7 +50,23 @@ app.get('/', (req, res) => {
 app.post('/code', (req, res) => {
 	var code = req.body.code
 	if(code == 'fbslo'){
-		res.send(true)
+		//res.send(true)
+		res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ valid: true, code: code }));
+	} else {
+		res.send(false)
+	}
+})
+
+app.post('/createAccount', (req, res) => {
+	var code = req.body.code
+	var name = req.body.name
+	var key = req.body.key
+	console.log(code + key+ name)
+	if(code == 'fbslo'){
+		//res.send(true)
+		res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ created: true, name: name, key: key }));
 	} else {
 		res.send(false)
 	}

@@ -1,7 +1,10 @@
-var hive = require('steem');
+var hive = require('steem-js-patched');
+var fs = require('fs')
 
-var wif = 'null'
-var from = 'fbslo'
+var config = JSON.parse(fs.readFileSync('./config.json'))
+
+var wif = config.key
+var from = config.account
 
 module.exports = {
   refund: function refund(amount, to){
@@ -9,18 +12,5 @@ module.exports = {
     hive.broadcast.transfer(wif, from, to, amount, memo, function(err, result) {
      console.log(err, result);
     });
-  },
-  resteem: function resteem(){
-    const json = JSON.stringify(['test', {
-      account: from,
-      author: 'timsaid',
-      permlink: 'myth-or-fact-25-bats-are-blind'
-    }]);
-    hive.broadcast.customJson(wif, [], [from], 'test', json, (err, result) => {
-      console.log(err, result);
-    });
-  },
-  key: function key(){
-    console.log(hive.auth.wifIsValid(wif, 'STM7X4ZNGveN4frLdfmhCkr3ivLPYKmzScCEgDsD2mXb8rHisKE7w'))
   }
 }

@@ -3,6 +3,11 @@ var app = express();
 var bodyParser = require("body-parser");
 var hive = require('steem');
 
+var payment = require("./scripts/payment.js")
+
+payment.getPayment()
+
+
 //remove header
 app.disable('x-powered-by');
 //create express connection and serve static files
@@ -12,35 +17,6 @@ app.use(express.static('images'));
 app.use(express.static('dest'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json()); // for parsing application/json
-
-hive.api.setOptions({ url: 'https://api.hive.blog' });
-
-var hiveBalance = 0
-
-async function start(){
-	console.log("Starting...")
-	getHiveTransactions()
-}
-
-async function getHiveTransactions(){
-	hive.api.streamTransactions('head', function(err, result) {
-		if (err) start()
-		try {
-			let type = result.operations[0][0]
-			let data = result.operations[0][1]
-			if(type == 'transfer' && data.to == 'fbslo'){
-			  console.log(data)
-			  console.log(data.amount)
-				hiveBalance += Number(data.amount.split(" ")[0])
-			}
-		} catch (err) {
-			start()
-		}
-	});
-}
-
-
-start()
 
 
 app.get('/', (req, res) => {

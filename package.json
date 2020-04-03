@@ -11,7 +11,8 @@
   "dependencies": {
     "ejs": "^3.0.2",
     "express": "^4.17.1",
-    "steem": "^0.7.11"
+    "steem": "^0.7.11",
+    "steem-js-patched": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

@@ -1,12 +1,14 @@
 var express =  require("express");
 var app = express();
 var bodyParser = require("body-parser");
-var hive = require('steem');
+var hive = require('steem-js-patched');
+var fs = require('fs')
+
+var config = JSON.parse(fs.readFileSync('config.json'))
 
 var payment = require("./scripts/payment.js")
 
 payment.getPayment()
-
 
 //remove header
 app.disable('x-powered-by');

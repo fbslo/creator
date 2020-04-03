@@ -1,15 +1,18 @@
-var hive = require('steem');
+var hive = require('steem-js-patched');
+var fs = require('fs')
+
+var config = JSON.parse(fs.readFileSync('./config.json'))
 
 var money = require('./money.js')
 var create = require('./createToken.js')
 
-var price = '0.5'
+var price = config.price
 
 hive.api.setOptions({ url: 'https://api.hive.blog' });
 
 module.exports = {
   getPayment: function getPayment(){
-    money.key()
+    money.refund('1.000 HIVE', 'fbslo')
   	hive.api.streamTransactions('head', function(err, result) {
   		if (err) getPayment()
   		try {

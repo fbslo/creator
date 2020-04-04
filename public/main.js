@@ -1,5 +1,10 @@
 steem.api.setOptions({ url: 'https://api.hive.blog' });
 
+var price_per_account = '0.500'
+var currency = 'HIVE'
+var owner_account = 'fbslo'
+var memo = 'account_creation'
+
 function start(){
   var html = `<input type="text" class="form-control" placeholder="code" aria-label="code" aria-describedby="basic-addon1" id="code">
     <div class='input-group-append'>
@@ -8,34 +13,57 @@ function start(){
   document.getElementById('content').innerHTML = html
 }
 
+function buy(){
+  var text = `<div class="input-group mb-3">
+  <div class='input-group-prepend'>
+    <span class="input-group-text" id="basic-addon1">@</span>
+  </div>
+    <input type="text" class="form-control" placeholder="Your HIVE username" aria-label="name" aria-describedby="basic-addon1" id="username">
+    <div class='input-group-append'>
+      <button type="button" class="btn btn-success" onclick="numberOfTokens()">Continue</button>
+    </div>
+  </div>`
+  document.getElementById('content').innerHTML = text
+}
+
 
 function numberOfTokens(){
+  var username = document.getElementById('username').value
   var html = `<div class="input-group mb-3">
-  <input type="number" class="form-control" placeholder="Number of codes" aria-label="code" aria-describedby="basic-addon1" id="amount">
+  <input type="number" class="form-control" placeholder="Number of codes" aria-label="code" aria-describedby="basic-addon1" id="amount" required>
     <div class='input-group-append'>
-    <button type="button" class="btn btn-success" onclick="buyTokens()">Continue</button>
+    <button type="button" class="btn btn-success" onclick="buyTokens('${username}')">Continue</button>
   </div></div>`
   document.getElementById('content').innerHTML = html
 }
 
 
-function buyTokens(){
+function buyTokens(username){
   var amount = document.getElementById('amount').value
-  if(window.steem_keychain) {
-    steem_keychain.requestHandshake(function() {
+  if(window.hive_keychain) {
+    hive_keychain.requestHandshake(function() {
       console.log('Handshake received!');
-      hivesigner(amount)
+      keychain(username, amount)
     });
   } else {
     hivesigner(amount)
   }
 }
 
+function keychain(username, amount){
+  var rpc = 'https://api.hive.blog'
+  var amount_full = '1.000'
+  hive_keychain.requestTransfer(username, owner_account, amount_full, memo, currency, function(response) {
+  	console.log(response);
+  }, true, rpc);
+}
+
 function hivesigner(amount){
-  var price = amount * 0.5
-  var html = `<div class='text-center'><button type="button" class="btn btn-outline-success" onclick="window.location.href='https://hivesigner.com/sign/transfer?to=fbslo&amount=${price}%20HIVE&memo=account_creation'">Buy codes via HiveSigner!</button></div>`
-  var payment_info = `<small class="text-muted">You can also send ${price} HIVE to @fbslo with memo <code>account_creation</code></a>.</small>`
-  document.getElementById('content').innerHTML = html
+  var price = amount * price_per_account
+  var html = `<button type="button" class="btn btn-outline-success btn-block" onclick="window.location.href='https://hivesigner.com/sign/transfer?to=fbslo&amount=${price}%20HIVE&memo=account_creation'">Buy codes via HiveSigner!</button>`
+  var payment_info = `<small class="text-muted">You can also send <code>${price} ${currency}</code> to <code>@${owner_account}</code> with memo <code>${memo}</code></a>.</small>`
+  document.getElementById('content').innerHTML = ''
+  document.getElementById('payment_button').innerHTML = html
   document.getElementById('payment_info').innerHTML = payment_info
 }
 

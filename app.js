@@ -22,6 +22,10 @@ if(config.accept_payment == 'true'){
 	payment.getPayment()
 }
 
+if(config.claim == 'true'){
+	claim.claimAccount()
+}
+
 //remove header
 app.disable('x-powered-by');
 //create express connection and serve static files

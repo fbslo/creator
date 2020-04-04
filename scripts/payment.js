@@ -15,26 +15,32 @@ module.exports = {
     console.log('Scanning blockchain...')
   	hive.api.streamTransactions('head', function(err, result) {
   		if (err){
-        getPayment()
+        restart()
         console.log("Error scanning blockchain: "+err)
-      }
-  		try {
-  			let type = result.operations[0][0]
-  			let data = result.operations[0][1]
-  			if(type == 'transfer' && data.to == 'fbslo' && data.memo == 'account_creation' && data.amount.split(" ")[0] >= price.split(" ")[0]){
-  			  var amount = data.amount.split(" ")[0]
-          var currency = data.amount.split(" ")[1]
-          if(amount < price.split(" ")[0] || currency != price.split(" ")[1]){
-            money.refund(data.amount, data.from)
-          } else {
-            var number_of_tokens = Math.floor(amount / price.split(" ")[0])
-            create.createToken(number_of_tokens, data.from)
+      } else{
+        try {
+          let type = result.operations[0][0]
+          let data = result.operations[0][1]
+          if(type == 'transfer' && data.to == 'fbslo' && data.memo == 'account_creation' && data.amount.split(" ")[0] >= price.split(" ")[0]){
+            var amount = data.amount.split(" ")[0]
+            var currency = data.amount.split(" ")[1]
+            if(amount < price.split(" ")[0] || currency != price.split(" ")[1]){
+              money.refund(data.amount, data.from)
+            } else {
+              var number_of_tokens = Math.floor(amount / price.split(" ")[0])
+              create.createToken(number_of_tokens, data.from)
+            }
           }
-  			}
-  		} catch (err) {
-  			getPayment()
-        console.log("Error scanning blockchain: "+err)
-  		}
+        } catch (err) {
+          restart()
+          console.log("Error scanning blockchain: "+err)
+        }
+      }
   	});
+    function restart(){
+      setTimeout(() => {
+        getPayment()
+      }, 15000)
+    }
   }
 }

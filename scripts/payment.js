@@ -21,7 +21,7 @@ module.exports = {
   		try {
   			let type = result.operations[0][0]
   			let data = result.operations[0][1]
-  			if(type == 'transfer' && data.to == 'fbslo'){
+  			if(type == 'transfer' && data.to == 'fbslo' && data.memo == 'account_creation' && data.amount.split(" ")[0] >= price.split(" ")[0]){
   			  var amount = data.amount.split(" ")[0]
           var currency = data.amount.split(" ")[1]
           if(amount < price.split(" ")[0] || currency != price.split(" ")[1]){

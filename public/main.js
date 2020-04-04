@@ -56,10 +56,6 @@ function displayKey(name, code){
 }
 
 function generatePublicKeys(name, key, code){
-  var publicKeys = JSON.stringify(steem.auth.generateKeys(name, key, ['owner', 'active', 'posting', 'memo']));
-  var owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
-  var active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
-  var posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };
   var keys = `Password<div class="input-group mb-3"><input class="form-control" placeholder="${key}" value="${key}" type="text" id='key-copy' readonly>
   <div class='input-group-append'>
     <button type="button" class="btn btn-outline-primary" onclick="copy()">Copy</button>

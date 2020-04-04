@@ -16,7 +16,7 @@ module.exports = {
   	hive.api.streamTransactions('head', function(err, result) {
   		if (err){
         getPayment()
-        console.log(err)
+        console.log("Error scanning blockchain: "+err)
       }
   		try {
   			let type = result.operations[0][0]
@@ -33,7 +33,7 @@ module.exports = {
   			}
   		} catch (err) {
   			getPayment()
-        console.log(err)
+        console.log("Error scanning blockchain: "+err)
   		}
   	});
   }

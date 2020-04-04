@@ -10,7 +10,7 @@ $.ajax({
   contentType: "application/json",
   dataType: 'json',
   success: function(result){
-    console.log(result)
+    console.log("API result: " + result)
     price_per_account = result.price_per_account
     currency = result.currency
     owner_account = result.owner_account
@@ -37,6 +37,36 @@ function buy(){
     </div>
   </div>`
   document.getElementById('content').innerHTML = text
+}
+
+function decrypt(){
+  // TODO: add decryptopn option from hivechain
+  var html = `<textarea type="text" class="form-control" placeholder="Encrypted Memo" aria-label="code" aria-describedby="basic-addon1" id="memo"></textarea>
+    <div class='input-group-append'>
+    <button type="button" class="btn btn-success" onclick="decryptMemo()">Continue</button>
+  </div>`
+  document.getElementById('content').innerHTML = html
+}
+
+function decryptMemo(){
+  var memo = document.getElementById('memo').value
+  if(window.hive_keychain) {
+    hive_keychain.requestHandshake(function() {
+      // TODO: decrypt with keychain
+    })
+  } else{
+    var html = `<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Private memo key" aria-label="code" aria-describedby="basic-addon1" id="memo_key" required>
+      <div class='input-group-append'>
+      <button type="button" class="btn btn-success" onclick="decryptWithKey('${memo}')">Continue</button>
+    </div></div>`
+    document.getElementById('content').innerHTML = html
+  }
+}
+
+function decryptWithKey(memo){
+  var memo_key = document.getElementById('memo_key').value
+  // TODO: decrypt with steemjs
 }
 
 

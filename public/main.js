@@ -1,9 +1,22 @@
 steem.api.setOptions({ url: 'https://api.hive.blog' });
 
-var price_per_account = '0.500'
-var currency = 'HIVE'
-var owner_account = 'fbslo'
-var memo = 'account_creation'
+var price_per_account;
+var currency;
+var owner_account;
+var memo;
+
+$.ajax({
+  url: '/api',
+  contentType: "application/json",
+  dataType: 'json',
+  success: function(result){
+    console.log(result)
+    price_per_account = result.price_per_account
+    currency = result.currency
+    owner_account = result.owner_account
+    memo = result.memo
+  }
+});
 
 function start(){
   var html = `<input type="text" class="form-control" placeholder="code" aria-label="code" aria-describedby="basic-addon1" id="code">

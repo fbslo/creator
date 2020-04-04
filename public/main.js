@@ -40,7 +40,6 @@ function buy(){
 }
 
 function decrypt(){
-  // TODO: add decryptopn option from hivechain
   var html = `<textarea type="text" class="form-control" placeholder="Encrypted Memo" aria-label="code" aria-describedby="basic-addon1" id="memo"></textarea>
     <div class='input-group-append'>
     <button type="button" class="btn btn-success" onclick="decryptMemo()">Continue</button>
@@ -52,7 +51,7 @@ function decryptMemo(){
   var memo = document.getElementById('memo').value
   if(window.hive_keychain) {
     hive_keychain.requestHandshake(function() {
-      // TODO: decrypt with keychain
+      decryptWithKeychain(memo)
     })
   } else{
     var html = `<div class="input-group mb-3">
@@ -69,6 +68,10 @@ function decryptWithKey(memo){
   // TODO: decrypt with steemjs
 }
 
+function decryptWithKeychain(memo){
+  var memo_key = document.getElementById('memo_key').value
+  // TODO: decrypt using private key
+}
 
 function numberOfTokens(){
   var username = document.getElementById('username').value
@@ -95,7 +98,7 @@ function buyTokens(username){
 
 function keychain(username, amount){
   var rpc = 'https://api.hive.blog'
-  amount_full = amount //.toFixed(3)
+  var amount_full = amount * price_per_account //.toFixed(3)
   hive_keychain.requestTransfer(username, owner_account, amount_full, memo, currency, function(response) {
   	console.log(response);
   }, true, rpc);

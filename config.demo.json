@@ -1,7 +1,13 @@
 {
-    "account": "fbslo",
-    "key": "thisisyourctivekey",
-    "accept_payment": "true",
-    "price": "0.5 HIVE",
-    "claim": "false"
+  "account": "youraccount",
+  "key": "thisisyouractivekey",
+  "accept_payment": "true",
+  "price": "0.5 HIVE",
+  "claim": "false",
+  "tip": "0.1",
+  "database_ip": "localhost",
+  "database_user": "root",
+  "database_password": "database_password",
+  "database_port": "3306",
+  "database": "creator"
 }

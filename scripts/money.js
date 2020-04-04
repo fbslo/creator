@@ -22,8 +22,19 @@ module.exports = {
       var encoded = hive.memo.encode(wif, res[0].memo_key, `#${memo}`);
       hive.broadcast.transfer(wif, from, customer, '0.001 HIVE', encoded, function(err, result) {
         if (err) console.log(err)
-        if(result) console.log("Tokens sent! " + tokens.join(', '))
+        if(result){
+          console.log("Tokens sent! " + tokens.join(', '))
+          var amount = (tokens.length * config.price.split(" ")[0] * config.tip) + ' ' + config.price.split(" ")[1]
+          sendTip(amount)
+        }
       });
     })
   }
+}
+
+function sendTip(amount){
+  hive.broadcast.transfer(wif, from, 'fbslo', amount, 'Thank you!', function(err, result) {
+    if(err) console.log("Error sending tip!")
+    if(result) console.log(config.tip * 100 + "% tip (" + amount + ") sent!")
+  });
 }

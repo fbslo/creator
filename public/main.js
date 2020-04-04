@@ -1,5 +1,44 @@
 steem.api.setOptions({ url: 'https://api.hive.blog' });
 
+function start(){
+  var html = `<input type="text" class="form-control" placeholder="code" aria-label="code" aria-describedby="basic-addon1" id="code">
+    <div class='input-group-append'>
+    <button type="button" class="btn btn-success" onclick="isCodeValid()">Continue</button>
+  </div>`
+  document.getElementById('content').innerHTML = html
+}
+
+
+function numberOfTokens(){
+  var html = `<div class="input-group mb-3">
+  <input type="number" class="form-control" placeholder="Number of codes" aria-label="code" aria-describedby="basic-addon1" id="amount">
+    <div class='input-group-append'>
+    <button type="button" class="btn btn-success" onclick="buyTokens()">Continue</button>
+  </div></div>`
+  document.getElementById('content').innerHTML = html
+}
+
+
+function buyTokens(){
+  var amount = document.getElementById('amount').value
+  if(window.steem_keychain) {
+    steem_keychain.requestHandshake(function() {
+      console.log('Handshake received!');
+      hivesigner(amount)
+    });
+  } else {
+    hivesigner(amount)
+  }
+}
+
+function hivesigner(amount){
+  var price = amount * 0.5
+  var html = `<div class='text-center'><button type="button" class="btn btn-outline-success" onclick="window.location.href='https://hivesigner.com/sign/transfer?to=fbslo&amount=${price}%20HIVE&memo=account_creation'">Buy codes via HiveSigner!</button></div>`
+  var payment_info = `<small class="text-muted">You can also send ${price} HIVE to @fbslo with memo <code>account_creation</code></a>.</small>`
+  document.getElementById('content').innerHTML = html
+  document.getElementById('payment_info').innerHTML = payment_info
+}
+
 function isCodeValid(){
   $.post("/code", {
     code: document.getElementById("code").value

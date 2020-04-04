@@ -72,10 +72,11 @@ app.post('/createAccount', (req, res) => {
 		else{
 			if(result.length != 0){
 				const jsonMetadata = JSON.stringify(['account_creation_service', {
-				  creator: config.account
+				  creator: config.account,
+					price: config.price
 				}]);
 				var wif = config.key
-				var fee = '0.000 STEEM'
+				var fee = '0.000 HIVE'
 				var creator = config.account
 				var publicKeys = JSON.stringify(hive.auth.generateKeys(name, key, ['owner', 'active', 'posting', 'memo']));
 				var owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
@@ -83,9 +84,14 @@ app.post('/createAccount', (req, res) => {
 				var posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };
 				hive.broadcast.accountCreate(wif, fee, creator, name, owner, active, posting, publicKeys.memo, jsonMetadata, function(err, result) {
 				  console.log(err, result);
+					if(err){
+						res.setHeader('Content-Type', 'application/json');
+						res.end(JSON.stringify({ created: false, name: name, key: key }));
+					} else{
+						res.setHeader('Content-Type', 'application/json');
+						res.end(JSON.stringify({ created: true, name: name, key: key }));
+					}
 				});
-				res.setHeader('Content-Type', 'application/json');
-				res.end(JSON.stringify({ created: true, name: name, key: key }));
 			}
 			else{
 				res.setHeader('Content-Type', 'application/json');

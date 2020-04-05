@@ -3,15 +3,19 @@ var app = express();
 var bodyParser = require("body-parser");
 var hive = require('steem-js-patched');
 var fs = require('fs')
+const dsteem = require('dsteem');
+
+const client = new dsteem.Client('https://api.hive.blog');
 
 var con = require('./database.js')
 
-hive.api.setOptions({ url: 'https://api.steemit.com' });
+hive.api.setOptions({ url: 'https://api.hive.blog' });
 
 var config = JSON.parse(fs.readFileSync('config.json'))
 
 var payment = require("./scripts/payment.js")
 var create = require('./scripts/createToken.js')
+var claim = require('./scripts/claim.js')
 
 
 if(config.accept_payment == 'true'){
@@ -78,7 +82,9 @@ app.post('/createAccount', (req, res) => {
 		}
 		else{
 			if(result.length != 0 && result[0].status !='1'){
-				const jsonMetadata = JSON.stringify(['account_creation_service', {
+
+
+				/*const jsonMetadata = JSON.stringify(['account_creation_service', {
 				  creator: config.account,
 					price: config.price
 				}]);
@@ -99,7 +105,66 @@ app.post('/createAccount', (req, res) => {
 						res.end(JSON.stringify({ created: true, name: name, key: key }));
 						create.updateToken(code)
 					}
-				});
+				});*/
+
+
+				const ownerKey = dsteem.PrivateKey.fromLogin(name, key, 'owner');
+				const activeKey = dsteem.PrivateKey.fromLogin(name, key, 'active');
+				const postingKey = dsteem.PrivateKey.fromLogin(name, key, 'posting');
+				const memoKey = dsteem.PrivateKey.fromLogin(
+				    name,
+				    key,
+				    'memo'
+				).createPublic(opts.addressPrefix);
+
+				const ownerAuth = {
+				    weight_threshold: 1,
+				    account_auths: [],
+				    key_auths: [[ownerKey.createPublic(opts.addressPrefix), 1]],
+				};
+				const activeAuth = {
+				    weight_threshold: 1,
+				    account_auths: [],
+				    key_auths: [[activeKey.createPublic(opts.addressPrefix), 1]],
+				};
+				const postingAuth = {
+				    weight_threshold: 1,
+				    account_auths: [],
+				    key_auths: [[postingKey.createPublic(opts.addressPrefix), 1]],
+				};
+
+				//create account
+				const privateKey = dsteem.PrivateKey.fromString(config.key);
+				let ops = [];
+				const create_op = [
+				    'create_claimed_account',
+				    {
+				        creator: config.account,
+				        new_account_name: name,
+				        owner: ownerAuth,
+				        active: activeAuth,
+				        posting: postingAuth,
+				        memo_key: memoKey,
+				        json_metadata: '',
+				        extensions: []
+				    },
+				];
+				ops.push(create_op)
+				//send transaction to blockchain
+				client.broadcast.sendOperations(ops, privateKey).then(
+				    function(result) {
+							res.setHeader('Content-Type', 'application/json');
+							res.end(JSON.stringify({ created: true, name: name, key: key }));
+							create.updateToken(code)
+				    },
+				    function(error) {
+			        console.error(error);
+							res.setHeader('Content-Type', 'application/json');
+							res.end(JSON.stringify({ created: false, name: name, key: key }));
+				    }
+				);
+
+
 			}
 			else{
 				res.setHeader('Content-Type', 'application/json');

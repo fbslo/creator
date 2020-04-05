@@ -5,13 +5,13 @@ var hive = require('steem-js-patched');
 var fs = require('fs')
 const dsteem = require('dsteem');
 
-const client = new dsteem.Client('https://api.hive.blog');
-
 var con = require('./database.js')
 
-hive.api.setOptions({ url: 'https://api.hive.blog' });
-
 var config = JSON.parse(fs.readFileSync('config.json'))
+
+
+hive.api.setOptions({ url: config.rpc });
+const client = new dsteem.Client(config.rpc);
 
 var payment = require("./scripts/payment.js")
 var create = require('./scripts/createToken.js')

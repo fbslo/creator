@@ -8,7 +8,7 @@ var create = require('./createToken.js')
 
 var price = config.price
 
-hive.api.setOptions({ url: 'https://api.hive.blog' });
+hive.api.setOptions({ url: config.rpc });
 
 module.exports = {
   getPayment: function getPayment(){

@@ -1,9 +1,10 @@
 const { Client, PrivateKey, Asset } = require('dsteem');
-const client = new Client('https://api.hive.blog');
 
 var fs = require('fs')
 
 var config = JSON.parse(fs.readFileSync('config.json'))
+
+const client = new Client(config.rpc);
 
 var wif = config.key
 var account = config.account

@@ -6,13 +6,7 @@ var fs = require('fs')
 
 var con = require('./database.js')
 
-//hive.api.setOptions({ url: 'https://api.hive.blog' });
-
-hive.api.setOptions({
-  address_prefix: 'TST',
-  chain_id: '46d82ab7d8db682eb1959aed0ada039a6d49afa1602491f93dde9cac3e8e6c32',
-  useTestNet: true,
-});
+hive.api.setOptions({ url: 'https://api.hive.blog' });
 
 var config = JSON.parse(fs.readFileSync('config.json'))
 

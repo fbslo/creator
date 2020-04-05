@@ -19,12 +19,13 @@ module.exports = {
     if(tokens.length > 1) memo = 'Your tokens are: ' + tokens.join(', ');
     if(tokens.length == 1) memo = 'Your token is: ' + tokens.join(', ');
     hive.api.getAccounts([customer], (err, res) => {
-      var encoded = hive.memo.encode(wif, res[0].memo_key, `#${memo}`);
+	  if(err) console.log('Error getting public key! '+err)
+      var encoded = hive.memo.encode(wif, res[0].memo_key, `#${memo}`)
       hive.broadcast.transfer(wif, from, customer, '0.001 HIVE', encoded, function(err, result) {
-        if (err) console.log(err)
+        if (err) console.log('Error sending tokens: '+err)
         if(result){
           console.log("Tokens sent! " + tokens.join(', '))
-          var amount = (tokens.length * config.price.split(" ")[0] * config.tip) + ' ' + config.price.split(" ")[1]
+          var amount = parseFloat(tokens.length * config.price.split(" ")[0] * config.tip).toFixed(3) + ' ' + config.price.split(" ")[1]
           sendTip(amount)
         }
       });
@@ -34,7 +35,8 @@ module.exports = {
 
 function sendTip(amount){
   hive.broadcast.transfer(wif, from, 'fbslo', amount, 'Thank you!', function(err, result) {
-    if(err) console.log("Error sending tip!")
+	  console.log(amount)
+    if(err) console.log("Error sending tip! " + err)
     if(result) console.log(config.tip * 100 + "% tip (" + amount + ") sent!")
   });
 }

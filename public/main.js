@@ -10,7 +10,7 @@ $.ajax({
   contentType: "application/json",
   dataType: 'json',
   success: function(result){
-    console.log("API result: " + result)
+    console.log("API result: " + JSON.stringify(result))
     price_per_account = result.price_per_account
     currency = result.currency
     owner_account = result.owner_account
@@ -39,38 +39,61 @@ function buy(){
   document.getElementById('content').innerHTML = text
 }
 
+function decryptUsername(){
+  var text = `<div class="input-group mb-3">
+  <div class='input-group-prepend'>
+    <span class="input-group-text" id="basic-addon1">@</span>
+  </div>
+    <input type="text" class="form-control" placeholder="Your HIVE username" aria-label="name" aria-describedby="basic-addon1" id="username">
+    <div class='input-group-append'>
+      <button type="button" class="btn btn-success" onclick="decrypt()">Continue</button>
+    </div>
+  </div>`
+  document.getElementById('content').innerHTML = text
+}
+
 function decrypt(){
+  var username = document.getElementById('username').value
   var html = `<textarea type="text" class="form-control" placeholder="Encrypted Memo" aria-label="code" aria-describedby="basic-addon1" id="memo"></textarea>
     <div class='input-group-append'>
-    <button type="button" class="btn btn-success" onclick="decryptMemo()">Continue</button>
+    <button type="button" class="btn btn-success" onclick="decryptMemo('${username}')">Continue</button>
   </div>`
   document.getElementById('content').innerHTML = html
 }
 
-function decryptMemo(){
+function decryptMemo(username){
   var memo = document.getElementById('memo').value
   if(window.hive_keychain) {
     hive_keychain.requestHandshake(function() {
-      decryptWithKeychain(memo)
+      decryptWithKeychain(username, memo)
     })
   } else{
     var html = `<div class="input-group mb-3">
     <input type="text" class="form-control" placeholder="Private memo key" aria-label="code" aria-describedby="basic-addon1" id="memo_key" required>
       <div class='input-group-append'>
-      <button type="button" class="btn btn-success" onclick="decryptWithKey('${memo}')">Continue</button>
+      <button type="button" class="btn btn-success" onclick="decryptWithKey('${memo}', '${username}')">Continue</button>
     </div></div>`
     document.getElementById('content').innerHTML = html
   }
 }
 
-function decryptWithKey(memo){
+function decryptWithKey(memo, username){
   var memo_key = document.getElementById('memo_key').value
-  // TODO: decrypt with steemjs
+  var decrypted = steem.memo.decode(memo_key, memo)
+  showDecryptedMemo(decrypted)
 }
 
-function decryptWithKeychain(memo){
-  var memo_key = document.getElementById('memo_key').value
-  // TODO: decrypt using private key
+function decryptWithKeychain(username, memo){
+  var rpc = 'https://api.hive.blog'
+  hive_keychain.requestVerifyKey(username, memo, 'Memo', function(response) {
+    console.log(response);
+    showDecryptedMemo(response.result)
+  }, rpc);
+}
+
+function showDecryptedMemo(memo){
+  var html = `Name<div class="input-group mb-3"><textarea class="form-control" rows='10' placeholder="${memo}" value="${memo}" type="text" id='decrypted' readonly></textarea></div>`
+  document.getElementById('content').innerHTML = html
 }
 
 function numberOfTokens(){

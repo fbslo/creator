@@ -98,7 +98,7 @@ function buyTokens(username){
 
 function keychain(username, amount){
   var rpc = 'https://api.hive.blog'
-  var amount_full = amount * price_per_account //.toFixed(3)
+  var amount_full = parseFloat(amount * price_per_account).toFixed(3)
   hive_keychain.requestTransfer(username, owner_account, amount_full, memo, currency, function(response) {
   	console.log(response);
   }, true, rpc);

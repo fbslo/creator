@@ -1,7 +1,7 @@
 {
-  "name": "steem2hive",
+  "name": "creator",
   "version": "1.0.0",
-  "description": "Steem to HIVE exchange.",
+  "description": "HIVE account creator.",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon ./app.js"

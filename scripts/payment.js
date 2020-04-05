@@ -8,7 +8,7 @@ var create = require('./createToken.js')
 
 var price = config.price
 
-hive.api.setOptions({ url: 'https://api.steemit.com' });
+hive.api.setOptions({ url: 'https://api.hive.blog' });
 
 module.exports = {
   getPayment: function getPayment(){

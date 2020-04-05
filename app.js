@@ -6,11 +6,13 @@ var fs = require('fs')
 
 var con = require('./database.js')
 
-hive.api.setOptions({ url: 'https://api.hive.blog' });
+hive.api.setOptions({ url: 'https://api.steemit.com' });
 
 var config = JSON.parse(fs.readFileSync('config.json'))
 
 var payment = require("./scripts/payment.js")
+var create = require('./scripts/createToken.js')
+
 
 if(config.accept_payment == 'true'){
 	payment.getPayment()
@@ -37,7 +39,7 @@ app.get('/', (req, res) => {
 
 app.post('/code', (req, res) => {
 	var code = req.body.code
-	var sql = 'SELECT * FROM tokens WHERE id=?'
+	var sql = 'SELECT * FROM tokens WHERE id=?;'
 	con.query(sql, [code], (err, result) => {
 		if(err){
 			console.log('Error selecting token! ' + err)
@@ -45,8 +47,14 @@ app.post('/code', (req, res) => {
 		}
 		else{
 			if(result.length != 0){
-				res.setHeader('Content-Type', 'application/json');
-		    res.end(JSON.stringify({ valid: true, code: code }));
+				if(result[0].status != '1'){
+					res.setHeader('Content-Type', 'application/json');
+			    res.end(JSON.stringify({ valid: true, code: code }));
+				}
+				else{
+					res.setHeader('Content-Type', 'application/json');
+			    res.end(JSON.stringify({ valid: false, code: code }));
+				}
 			}
 			else{
 				res.setHeader('Content-Type', 'application/json');
@@ -61,14 +69,15 @@ app.post('/createAccount', (req, res) => {
 	var name = req.body.name
 	var key = req.body.key
 
-	var sql = 'SELECT * FROM tokens WHERE id=?'
+	var sql = 'SELECT * FROM tokens WHERE id=? AND status <> "1";'
+	create.updateToken(code)
 	con.query(sql, [code], (err, result) => {
 		if(err){
 			console.log('Error selecting token! ' + err)
 			res.status(500)
 		}
 		else{
-			if(result.length != 0){
+			if(result.length != 0 && result[0].status !='1'){
 				const jsonMetadata = JSON.stringify(['account_creation_service', {
 				  creator: config.account,
 					price: config.price
@@ -88,6 +97,7 @@ app.post('/createAccount', (req, res) => {
 					} else{
 						res.setHeader('Content-Type', 'application/json');
 						res.end(JSON.stringify({ created: true, name: name, key: key }));
+						create.updateToken(code)
 					}
 				});
 			}

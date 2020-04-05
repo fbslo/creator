@@ -7,6 +7,13 @@ module.exports = {
     var tokens = token.match(/.{12}/g)
     insertIntoDatabase(tokens)
     money.sendToken(tokens, customer)
+  },
+  updateToken: function updateToken(token){
+    var sql = 'UPDATE tokens SET status="1" WHERE id=?'
+    con.query(sql, [token], (err, result) => {
+      if(err) console.log("Error updating token: " + err)
+      if(!err) console.log("Token "+token+" updated!")
+    })
   }
 }
 

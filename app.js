@@ -11,8 +11,7 @@ let opts = {};
 
 var con = require('./database.js')
 
-var config = JSON.parse(fs.readFileSync('config.json'))
-
+var config = require('./config')
 
 hive.api.setOptions({ url: config.rpc });
 const client = new dsteem.Client(config.rpc);

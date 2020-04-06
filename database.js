@@ -2,7 +2,7 @@ var mysql = require("mysql");
 const fs = require('fs');
 
 //Get credentials  from configuration file
-var config = JSON.parse(fs.readFileSync('config.json'))
+var config = require('./config.json') 
 var { database_ip, database_user, database_password, database_port, database } = config
 
 //create connection to MySQL database

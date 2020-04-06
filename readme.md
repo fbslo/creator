@@ -104,7 +104,7 @@ Feel free to fork this project and add more features :)
 
 ---
 
-<center><b>@fbslo</b><br><sup>fbslo.net</sup>Discord: fbslo#8470</center>
+<center><b>@fbslo</b><br>Discord: fbslo#8470</center>
 
 ---
 

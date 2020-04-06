@@ -5,9 +5,11 @@
   "price": "0.5 HIVE",
   "claim": "false",
   "tip": "0.1",
+  "rpc": "https://api.hive.blog",
   "database_ip": "localhost",
   "database_user": "root",
   "database_password": "database_password",
   "database_port": "3306",
-  "database": "creator"
+  "database": "creator",
+  "env": "dev"
 }

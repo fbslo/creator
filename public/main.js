@@ -122,6 +122,8 @@ function buyTokens(username){
 function keychain(username, amount){
   var rpc = 'https://api.hive.blog'
   var amount_full = parseFloat(amount * price_per_account).toFixed(3)
+  var payment_info = `<small class="text-muted">You can also send <code>${amount_full} ${currency}</code> to <code>@${owner_account}</code> with memo <code>${memo}</code></a>.</small>`
+  document.getElementById('payment_info').innerHTML = payment_info
   hive_keychain.requestTransfer(username, owner_account, amount_full, memo, currency, function(response) {
   	console.log(response);
   }, true, rpc);

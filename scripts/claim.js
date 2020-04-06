@@ -16,7 +16,7 @@ module.exports = {
 	fee: Asset.from('0.000 STEEM'),
 	extensions: [],
   }];
-
+  claim(op)
   setInterval(() => {
     claim(op)
   }, 1000*60*60*12) //12h

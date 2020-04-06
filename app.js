@@ -3,7 +3,10 @@ var app = express();
 var bodyParser = require("body-parser");
 var hive = require('steem-js-patched');
 var fs = require('fs')
+
 const dsteem = require('dsteem');
+let opts = {};
+
 
 var con = require('./database.js')
 
@@ -74,40 +77,17 @@ app.post('/createAccount', (req, res) => {
 	var key = req.body.key
 
 	var sql = 'SELECT * FROM tokens WHERE id=? AND status <> "1";'
-	create.updateToken(code)
 	con.query(sql, [code], (err, result) => {
 		if(err){
 			console.log('Error selecting token! ' + err)
-			res.status(500)
+			res.send('500')
 		}
 		else{
 			if(result.length != 0 && result[0].status !='1'){
-
-
-				/*const jsonMetadata = JSON.stringify(['account_creation_service', {
+				const jsonMetadata = JSON.stringify(['account_creation_service', {
 				  creator: config.account,
 					price: config.price
 				}]);
-				var wif = config.key
-				var fee = '0.000 HIVE'
-				var creator = config.account
-				var publicKeys = JSON.stringify(hive.auth.generateKeys(name, key, ['owner', 'active', 'posting', 'memo']));
-				var owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
-				var active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
-				var posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };
-				hive.broadcast.accountCreate(wif, fee, creator, name, owner, active, posting, publicKeys.memo, jsonMetadata, function(err, result) {
-				  console.log(err, result);
-					if(err){
-						res.setHeader('Content-Type', 'application/json');
-						res.end(JSON.stringify({ created: false, name: name, key: key }));
-					} else{
-						res.setHeader('Content-Type', 'application/json');
-						res.end(JSON.stringify({ created: true, name: name, key: key }));
-						create.updateToken(code)
-					}
-				});*/
-
-
 				const ownerKey = dsteem.PrivateKey.fromLogin(name, key, 'owner');
 				const activeKey = dsteem.PrivateKey.fromLogin(name, key, 'active');
 				const postingKey = dsteem.PrivateKey.fromLogin(name, key, 'posting');
@@ -145,7 +125,7 @@ app.post('/createAccount', (req, res) => {
 				        active: activeAuth,
 				        posting: postingAuth,
 				        memo_key: memoKey,
-				        json_metadata: '',
+				        json_metadata: jsonMetadata,
 				        extensions: []
 				    },
 				];
@@ -153,6 +133,7 @@ app.post('/createAccount', (req, res) => {
 				//send transaction to blockchain
 				client.broadcast.sendOperations(ops, privateKey).then(
 				    function(result) {
+							console.log(result)
 							res.setHeader('Content-Type', 'application/json');
 							res.end(JSON.stringify({ created: true, name: name, key: key }));
 							create.updateToken(code)

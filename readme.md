@@ -1,4 +1,4 @@
-<center><h2>HIVE Creator</h2><em>Make Money Creating Accounts</em><br><sup>[Github](https://github.com/fbslo/creator)</sup><h2>Visit website: [HIVE Creator](https://www.fbslo.net/creator)</h2><sup>[API](www.fbslo.net/api)</sup></center>
+<center><h2>HIVE Creator</h2><em>Make Money Creating Accounts</em><br><h2>Visit website: https://www.fbslo.net/creator</h2></center>
 
 
 ***What is HIVE Creator?*** It's an open source app that allows anyone to host account creation service (like [Blocktrades.us](https://blocktrades.us/en/create-hive-account))
@@ -18,8 +18,6 @@ If users don't use memo `account_creation`, payment will not be detected. If amo
 
 ***For-profit system is not required, you can disable payments and create/distribute codes manually.***
 
-<h2>Visit website: [HIVE Creator](https://www.fbslo.net/creator)</h2>
-
 Because some HIVE frontends don't support memo decryption, you can use tool on the website to decrypt memo (Keychain & private memo key supported) and get your account creation tokens!
 
 You can also use tool on the site to buy account creation tokens (HiveSigner & Keychain supported)!
@@ -38,20 +36,29 @@ All transfers are divided by price and than rounded down. If you send 10.3 HIVE 
 Service was tested on Windows 10 and Ubuntu 16.04. This instructions are for Ubuntu 16.04.
 
 1 - Clone Github repository: https://github.com/fbslo/creator
+
 `git clone https://github.com/fbslo/creator.git`
+
 `cd creator`
+
 `npm install`
 
 2 - Create MySQL database:
+
 `mysql  -p`
+
 `create database creator;`
+
 `use creator;`
+
 `create table tokens(id TEXT, status INTEGER);`
 
 `id` is used to store account creation token, `status` is NULL before token is used and 1 after it is used.
 
 3 - Rename and edit config.json
+
 Rename config.demo.json to config.json
+
 ```
 {
   "account": "youraccount", 
@@ -75,7 +82,9 @@ Note: If you enable account claiming, it will claim accounts every 12 hours and 
 <br>
 
 4 - Run the service:
+
 `node app.js`
+
 Or use pm2: `pm2 start app.js`
 
 ***YOU SHOULDN'T RUN THIS APP AS ROOT! Use nginx as reverse proxy, run app in dev mode and forward all requests to port 5000. See [THIS tutorial](https://coderrocketfuel.com/article/deploy-a-nodejs-application-to-digital-ocean-with-https), you will also get automatic SSL keys generated***
@@ -95,7 +104,7 @@ Feel free to fork this project and add more features :)
 
 ---
 
-<center><b>@fbslo</b><br><sup>[fbslo.net](https://www.fbslo.net)</sup><br>https://github.com/fbslo/creator<br>Discord: fbslo#8470</center>
+<center><b>@fbslo</b><br><sup>fbslo.net</sup>Discord: fbslo#8470</center>
 
 ---
 

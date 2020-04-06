@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var hive = require('steem-js-patched');
 var fs = require('fs')
+const https = require('https');
 
 const dsteem = require('dsteem');
 let opts = {};
@@ -165,4 +166,24 @@ app.get('/api', (req, res) => {
 	res.json(api_response)
 })
 
-app.listen(5000)
+if(config.env.toLowerCase() == 'production'){
+  // Variables for https and http
+  var port_http = 80 //port for http
+  var port_https = 443 //port for https
+  // we will pass our 'app' to 'https' server
+  https.createServer({
+      key: fs.readFileSync('./ssl/key.pem'),
+      cert: fs.readFileSync('./ssl/cert.pem')
+      //passphrase: 'password'
+  }, app)
+  .listen(port_https);
+
+  // Redirect from http port 80 to https
+  var http = require('http');
+  http.createServer(function (req, res) {
+      res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+      res.end();
+  }).listen(port_http);
+} else {
+	app.listen(5000)
+}

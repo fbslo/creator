@@ -66,6 +66,7 @@ function decryptMemo(username){
   if(window.hive_keychain) {
     hive_keychain.requestHandshake(function() {
       decryptWithKeychain(username, memo)
+	  console.log('Decrypting with keychain')
     })
   } else{
     var html = `<div class="input-group mb-3">
@@ -92,7 +93,7 @@ function decryptWithKeychain(username, memo){
 }
 
 function showDecryptedMemo(memo){
-  var html = `Name<div class="input-group mb-3"><textarea class="form-control" rows='10' placeholder="${memo}" value="${memo}" type="text" id='decrypted' readonly></textarea></div>`
+  var html = `<div class="input-group mb-3"><textarea class="form-control" rows='10' placeholder="${memo}" value="${memo}" type="text" id='decrypted' readonly="readonly">${memo}</textarea></div>`
   document.getElementById('content').innerHTML = html
 }
 

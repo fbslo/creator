@@ -19,7 +19,8 @@ $.ajax({
 });
 
 function start(){
-  var html = `<input type="text" class="form-control" placeholder="code" aria-label="code" aria-describedby="basic-addon1" id="code">
+  var query = urlParams["code"] || ''
+  var html = `<input type="text" class="form-control" placeholder="code" value="${query}" aria-label="code" aria-describedby="basic-addon1" id="code">
     <div class='input-group-append'>
     <button type="button" class="btn btn-success" onclick="isCodeValid()">Continue</button>
   </div>`
@@ -293,6 +294,19 @@ function download() {
   console.log(element)
   document.body.removeChild(element);
 }
+
+var urlParams;
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+})();
 
 window.onbeforeunload = function() {
     return "Did you save the password?"

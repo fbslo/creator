@@ -25,7 +25,16 @@ Because some HIVE frontends don't support memo decryption, you can use tool on t
 
 You can also use tool on the site to buy account creation tokens (HiveSigner & Keychain supported)!
 
-All transfers are divided by price and than rounded down. If you send 10.3 HIVE and price is 0.500 HIVE, you will get 20 codes and remaining will NOT be refunded (in v1.0, it might change in future).
+All transfers are divided by price and than rounded down. If you send 10.3 HIVE and price is 0.500 HIVE, you will get 20 codes and remaining will be refunded.
+
+---
+
+<center><h2>API</h2></center>
+
+
+Public API with details about service is available at /api (GET request).
+
+To create account using API, add new authorization token to `apitokens` table in database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: `name` (name of new account) and `key` (password for new account).
 
 ---
 
@@ -111,10 +120,6 @@ Or use pm2: `pm2 start app.js`
 
 In production mode, SSL is required!
 Create key.pem and cert.pem and store them to /ssl directory. You can get free SSL certificates on https://www.sslforfree.com/. ***(Not recommended, see nginx setup above)***
-
-API is available at website.com/api
-
-To create account using API, add new authorization token to `apitokens` database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: `name` (name of new account) and `key` (password for new account).
 
 
 ---

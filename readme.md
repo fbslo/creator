@@ -13,11 +13,11 @@ If users don't use memo `account_creation`, payment will not be detected. If amo
 ***Features:***
 * Account creation
 * Claiming accounts (optional)
-* Receiving payments & handling all cupon codes (optional)
+* Receiving payments & handling all account creation codes (optional)
 * Memo decryption
 * API for creating accounts
 
-API allows big stakeholders with thousands of claimed pending accounts to work with dApps and other platforms that may need to create accounts for new users. You can run this service without frontend and only allows other apps/users (that have your authorization) to send POST requests to your API and your account will create new account for them. You can remove authorization at any time.
+API allows big stakeholders with thousands of claimed pending accounts to work with dApps and other platforms that may need to create accounts for new users. You can run this service without frontend and only allows other apps/users (that have your authorization) to send POST requests to your API and your account will create new account for them. Owner may remove authorization at any time.
 
 ***For-profit system is not required, you can disable payments and create/distribute codes manually.***
 

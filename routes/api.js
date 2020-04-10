@@ -115,15 +115,15 @@ function createAccount(user, token, name, key){
         console.log(result)
         var status = 'true'
         return_status = JSON.stringify({ created: true, name: name, key: key })
+		saveToDatabase(status, name, user)
         return return_status;
-        saveToDatabase(status, name, user)
       },
       function(error) {
         var status = 'false'
         //console.error(error);
         return_status = JSON.stringify({ created: false, name: name, key: key })
+		saveToDatabase(status, name, user)
         return return_status;
-        saveToDatabase(status, name, user)
       }
   );
 }

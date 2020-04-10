@@ -4,6 +4,10 @@ var router = express.Router()
 var config = require('./../config');
 var con = require('./../database.js')
 
+const dsteem = require('dsteem');
+let opts = {};
+const client = new dsteem.Client(config.rpc);
+
 //POST request to /createAccount
 router.post('/', (req, res) => {
 	var code = req.body.code

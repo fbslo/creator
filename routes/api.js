@@ -9,7 +9,7 @@ let opts = {};
 const client = new dsteem.Client(config.rpc);
 var return_status;
 
-//GET /api
+//GET /api for basic info about service
 router.get('/', (req, res) => {
 	var api_response = {
 		price_per_account: config.price.split(" ")[0],
@@ -20,6 +20,10 @@ router.get('/', (req, res) => {
 	res.json(api_response)
 })
 
+/*POST to /api/createAccount
+* Headers: authority
+* Body: name, key
+*/
 router.post('/createAccount', (req, res) => {
   if(config.create_account_api == 'true'){
     //req.headers.authority is auth token
@@ -135,7 +139,8 @@ function saveToDatabase(status, name, user){
   var values = [[status, name, user, time]]
   var sql = 'INSERT INTO logs (status, name, user, time) values ?'
   con.query(sql, [values], (err, result) => {
-    // TODO:
+    if(err) console.log("Error inserting logs! " + err)
+    if(result) console.log("Logs inserted!")
   })
 }
 

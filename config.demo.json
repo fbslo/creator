@@ -2,6 +2,7 @@
   "account": "youraccount",
   "key": "thisisyouractivekey",
   "create_account_frontend": "true",
+  "create_account_api": "true",
   "accept_payment": "true",
   "price": "0.5 HIVE",
   "claim": "false",

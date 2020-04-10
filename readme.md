@@ -17,6 +17,8 @@ If users don't use memo `account_creation`, payment will not be detected. If amo
 * Memo decryption
 * API for creating accounts
 
+API allows big stakeholders with thousands of claimed pending accounts to work with dApps and other platforms that may need to create account for new users. You can run this service without frontend and only allows other apps/users (that have your authorization) to send POST requests to your API and your account will create new account for them. You can remove authorization at any time.
+
 ***For-profit system is not required, you can disable payments and create/distribute codes manually.***
 
 Because some HIVE frontends don't support memo decryption, you can use tool on the website to decrypt memo (Keychain & private memo key supported) and get your account creation tokens!
@@ -31,6 +33,8 @@ All transfers are divided by price and than rounded down. If you send 10.3 HIVE 
 
 - NodeJS & NPM
 - MySQL database
+
+- My app is using 15 mb RAM, if you have 256 mb VPS (get one at privex.io for $0.99/month) you can run this app with no problems.
 
 (Detailed instructions: https://gist.github.com/fbslo/b63bab4c9e7cfc09e5b613fbe4715937)
 

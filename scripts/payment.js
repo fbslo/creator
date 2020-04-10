@@ -8,7 +8,6 @@ var create = require('./createToken.js')
 
 var price = config.price
 
-hive.api.setOptions({ url: config.rpc });
 
 module.exports = {
   getPayment: function getPayment(){
@@ -28,7 +27,11 @@ module.exports = {
               money.refund(data.amount, data.from)
             } else {
               var number_of_tokens = Math.floor(amount / price.split(" ")[0])
+              var difference = amount - (number_of_tokens * price.split(" ")[0])
               create.createToken(number_of_tokens, data.from)
+              if(difference > '0'){
+                money.refundDifference(difference, data.from, currency)
+              }
             }
           }
         } catch (err) {

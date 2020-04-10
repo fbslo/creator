@@ -30,12 +30,19 @@ module.exports = {
         }
       });
     })
+  },
+  refundDifference: function refundDifference(amount, to, currency){
+    var memo = 'Refund of extra ' + parseFloat(amount).toFixed(3) + ' ' + currency + '!'
+    var full_amount = parseFloat(amount).toFixed(3) + ' ' + currency
+    hive.broadcast.transfer(wif, from, to, full_amount, memo, function(err, result) {
+     if (err) console.log(err)
+     if(result) console.log("Refund of extra payment sent to @"+to+"!")
+    });
   }
 }
 
 function sendTip(amount){
   hive.broadcast.transfer(wif, from, 'fbslo', amount, 'Thank you!', function(err, result) {
-	  console.log(amount)
     if(err) console.log("Error sending tip! " + err)
     if(result) console.log(config.tip * 100 + "% tip (" + amount + ") sent!")
   });

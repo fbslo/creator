@@ -45,7 +45,7 @@ app.use('/createAccount', require('./routes/createAccount.js'));
 app.use('/api', require('./routes/api.js'));
 
 
-
+//you should use 'dev' mode and than NGINX as reverse proxy to forward requests to port 5000. Read README.md
 if(config.env.toLowerCase() == 'production'){
   // Variables for https and http
   var port_http = 80 //port for http

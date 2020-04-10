@@ -14,7 +14,7 @@ module.exports = {
      if(result) console.log("Refund sent to @"+to)
     });
   },
-  sendToken: async function sendToken(tokens, customer){
+  sendToken: function sendToken(tokens, customer){
     var memo = '';
     if(tokens.length > 1) memo = 'Your tokens are: ' + tokens.join(', ');
     if(tokens.length == 1) memo = 'Your token is: ' + tokens.join(', ');

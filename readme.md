@@ -114,6 +114,9 @@ Create key.pem and cert.pem and store them to /ssl directory. You can get free S
 
 API is available at website.com/api
 
+To create account using API, add new authorization token to `apitokens` database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: `name` (name of new account) and `key` (password for new account).
+
+
 ---
 
 Please report any bugs.

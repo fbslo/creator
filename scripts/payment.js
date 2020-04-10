@@ -8,7 +8,6 @@ var create = require('./createToken.js')
 
 var price = config.price
 
-
 module.exports = {
   getPayment: function getPayment(){
     console.log('Scanning blockchain...')

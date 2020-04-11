@@ -38,6 +38,13 @@ module.exports = {
      if (err) console.log(err)
      if(result) console.log("Refund of extra payment sent to @"+to+"!")
     });
+  },
+  refundBlacklist: function refundBlacklist(amount, to){
+    var memo = '@'+to+' is blacklisted!'
+    hive.broadcast.transfer(wif, from, to, amount, memo, function(err, result) {
+     if (err) console.log(err)
+     if(result) console.log("Blacklist refund sent to @"+to+"!")
+    });
   }
 }
 

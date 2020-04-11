@@ -31,6 +31,12 @@ if(config.claim == 'true'){
 
 //remove header
 app.disable('x-powered-by');
+//allow requests from other domains
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 //create express connection and serve static files
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));

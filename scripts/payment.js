@@ -7,6 +7,7 @@ var config = JSON.parse(fs.readFileSync('./config.json'))
 var money = require('./money.js')
 var create = require('./createToken.js')
 var whitelist = fs.readFileSync('whitelist.txt').toString().split("\n");
+//remove empty strings & spaces in strings
 whitelist = (whitelist.filter(item => item)).map(str => str.replace(/\s/g, ''));
 
 var price = config.price

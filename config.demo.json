@@ -7,6 +7,7 @@
   "price": "0.5 HIVE",
   "claim": "false",
   "tip": "0.1",
+  "blacklist": "true",
   "rpc": "https://api.hive.blog",
   "database_ip": "localhost",
   "database_user": "root",

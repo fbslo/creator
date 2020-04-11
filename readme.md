@@ -15,9 +15,10 @@ If users don't use memo `account_creation`, payment will not be detected. If amo
 * Claiming accounts (optional)
 * Receiving payments & handling all account creation codes (optional)
 * Memo decryption
-* API for creating accounts
+* Private API for creating accounts (optional)
+* Blacklist (optional)
 
-API allows big stakeholders with thousands of claimed pending accounts to work with dApps and other platforms that may need to create accounts for new users. You can run this service without frontend and only allows other apps/users (that have your authorization) to send POST requests to your API and your account will create new account for them. Owner cAN remove authorization at any time.
+API allows big stakeholders with thousands of claimed pending accounts to work with dApps and other platforms that may need to create accounts for new users. You can run this service without frontend and only allows other apps/users (that have your authorization) to send POST requests to your API and your account will create new account for them. Owner can remove authorization at any time.
 
 ***For-profit system is not required, you can disable payments and create/distribute codes manually.***
 
@@ -34,7 +35,15 @@ All transfers are divided by price and than rounded down. If you send 10.3 HIVE 
 
 Public API with details about service is available at /api (GET request).
 
-To create account using API, add new authorization token to `apitokens` table in database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: `name` (name of new account) and `key` (password for new account).
+To create account using private API, add new authorization token to `apitokens` table in database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: `name` (name of new account) and `key` (password for new account).
+
+---
+
+<center><h2>Blacklist</h2></center>
+
+You can now use @themarkymark's blacklist and block all blacklisted users  (over 70,000 blacklisted users at the time of writing). If user is on any blacklist, all funds will be refunded.
+
+There is also option to whitelist users, so even if they are blacklisted, they will still be able to buy new accounts.
 
 ---
 

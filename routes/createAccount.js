@@ -14,14 +14,14 @@ router.post('/', (req, res) => {
 	var name = req.body.name
 	var key = req.body.key
 
-	var sql = 'SELECT * FROM tokens WHERE id=? AND status <> "1";'
+	var sql = 'SELECT * FROM tokens WHERE id=? AND status IS NULL;'
 	con.query(sql, [code], (err, result) => {
 		if(err){
 			console.log('Error selecting token! ' + err)
 			res.send('500')
 		}
 		else{
-			if(result.length != 0 && result[0].status !='1'){
+			if(result.length != 0){
 				const jsonMetadata = JSON.stringify(['account_creation_service', {
 					creator: config.account,
 					price: config.price

@@ -133,7 +133,7 @@ function keychain(username, amount){
 
 function hivesigner(amount){
   var price = amount * price_per_account
-  var html = `<button type="button" class="btn btn-outline-success btn-block" onclick="window.location.href='https://hivesigner.com/sign/transfer?to=fbslo&amount=${price}%20HIVE&memo=account_creation'">Buy codes via HiveSigner!</button>`
+  var html = `<button type="button" class="btn btn-outline-success btn-block" onclick="window.location.href='https://hivesigner.com/sign/transfer?to=${owner_account}&amount=${price}%20HIVE&memo=account_creation'">Buy codes via HiveSigner!</button>`
   var payment_info = `<small class="text-muted">You can also send <code>${price} ${currency}</code> to <code>@${owner_account}</code> with memo <code>${memo}</code></a>.</small>`
   document.getElementById('content').innerHTML = ''
   document.getElementById('payment_button').innerHTML = html

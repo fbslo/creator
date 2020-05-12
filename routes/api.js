@@ -41,12 +41,18 @@ router.post('/createAccount', (req, res) => {
           if(result.length != 0) {
             //result[0].user is creator of the account
             var name = req.body.name
-            var key = req.body.key
-            res.setHeader('Content-Type', 'application/json');
-            createAccount(result[0].user, result[0].token, name, key).then((response) => {
-              console.log(response)
-              res.send(response)
-            })
+            var publicKeys = req.body.publicKeys
+
+            if (typeof name === undefined || publicKeys === undefined) {
+              res.send('Body data is invalid or missing!')
+            } else {
+              res.setHeader('Content-Type', 'application/json');
+              createAccount(result[0].user, result[0].token, name, publicKeys).then((response) => {
+                console.log(response)
+                res.send(response)
+              })
+            }
+
           } else {
             var ip_raw = req.ip || req.ips || req.connection.remoteAddress
             var ip = ip_raw.replace('::ffff:', '');
@@ -62,34 +68,26 @@ router.post('/createAccount', (req, res) => {
 })
 
 
-function createAccount(user, token, name, key){
+function createAccount(user, token, name, publicKeys){
   const jsonMetadata = JSON.stringify(['account_creation_service', {
     creator: config.account,
     price: config.price
   }]);
-  const ownerKey = dsteem.PrivateKey.fromLogin(name, key, 'owner');
-  const activeKey = dsteem.PrivateKey.fromLogin(name, key, 'active');
-  const postingKey = dsteem.PrivateKey.fromLogin(name, key, 'posting');
-  const memoKey = dsteem.PrivateKey.fromLogin(
-      name,
-      key,
-      'memo'
-  ).createPublic(opts.addressPrefix);
 
   const ownerAuth = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[ownerKey.createPublic(opts.addressPrefix), 1]],
+      key_auths: [[publicKeys.owner, 1]],
   };
   const activeAuth = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[activeKey.createPublic(opts.addressPrefix), 1]],
+      key_auths: [[publicKeys.active, 1]],
   };
   const postingAuth = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[postingKey.createPublic(opts.addressPrefix), 1]],
+      key_auths: [[publicKeys.posting, 1]],
   };
 
   //create account
@@ -103,7 +101,7 @@ function createAccount(user, token, name, key){
           owner: ownerAuth,
           active: activeAuth,
           posting: postingAuth,
-          memo_key: memoKey,
+          memo_key: publicKeys.memo,
           json_metadata: jsonMetadata,
           extensions: []
       },
@@ -114,14 +112,14 @@ function createAccount(user, token, name, key){
       function(result) {
         console.log(result)
         var status = 'true'
-        return_status = JSON.stringify({ created: true, name: name, key: key })
+        return_status = JSON.stringify({ created: true, name: name })
 		saveToDatabase(status, name, user)
         return return_status;
       },
       function(error) {
         var status = 'false'
-        //console.error(error);
-        return_status = JSON.stringify({ created: false, name: name, key: key })
+        console.error(error);
+        return_status = JSON.stringify({ created: false, name: name })
 		saveToDatabase(status, name, user)
         return return_status;
       }

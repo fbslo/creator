@@ -82,7 +82,7 @@ If you want to enable API, create two more tables:
 
 `create table logs(status TEXT, name TEXT, user TEXT, time TEXT);`
 
-`status` is true or false, `name` is username of created account, `user` is name of API user (e.g dApp) (user from `apitokens` table).
+`status` is true or false, `name` is username of created account, `user` is name of API user (e.g dApp) (user from `apiTokens` table).
 
 `create table apitokens(token TEXT, user TEXT);`
 

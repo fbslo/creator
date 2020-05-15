@@ -35,7 +35,18 @@ All transfers are divided by price and than rounded down. If you send 10.3 HIVE 
 
 Public API with details about service is available at /api (GET request).
 
-To create account using private API, add new authorization token to `apitokens` table in database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: `name` (name of new account) and `key` (password for new account).
+To create account using private API, add new authorization token to `apitokens` table in database, and make POST request to /api/createAccount with header `authority: yourapitoken` and body: 
+
+```
+{
+    "name": "test-account",
+    "publicKeys": {
+        "owner": "STM8DX2RogwicpP6vssSE6zRjzbfKg1w51DkWu8R8KnnaLgjPUEpz",
+        "active": "STM6UfZz3KfFAy1L5ozioR4Fbvut1b4TYqbNRkn6VemLr4jSXnV3D",
+        "posting": "STM6sJNfb68XMYohUzTZ4npJi9ydpGbKfFQvY4UpeLCS3eUvnmby8",
+        "memo": "STM5CUadUcebqf6jS6nNSWbrX8EJfYQ1CYb9S9ucqkntYZmPYJtGB"
+    }
+}```
 
 ---
 

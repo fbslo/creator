@@ -46,7 +46,8 @@ To create account using private API, add new authorization token to `apitokens` 
         "posting": "STM6sJNfb68XMYohUzTZ4npJi9ydpGbKfFQvY4UpeLCS3eUvnmby8",
         "memo": "STM5CUadUcebqf6jS6nNSWbrX8EJfYQ1CYb9S9ucqkntYZmPYJtGB"
     }
-}```
+}
+```
 
 ---
 

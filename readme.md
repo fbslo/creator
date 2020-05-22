@@ -20,6 +20,8 @@ If users don't use memo `account_creation`, payment will not be detected. If amo
 
 API allows big stakeholders with thousands of claimed pending accounts to work with dApps and other platforms that may need to create accounts for new users. You can run this service without frontend and only allows other apps/users (that have your authorization) to send POST requests to your API and your account will create new account for them. Owner can remove authorization at any time.
 
+If you need only API, use https://github.com/christianfuerst/creator-api by @christianfuerst (@roomservice), light weight "API only" solution for providing an API for HIVE account creation. 
+
 ***For-profit system is not required, you can disable payments and create/distribute codes manually.***
 
 Because some HIVE frontends don't support memo decryption, you can use tool on the website to decrypt memo (Keychain & private memo key supported) and get your account creation tokens!
